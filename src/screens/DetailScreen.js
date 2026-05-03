@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
-import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import useFavoriteStore from '../store/useFavoriteStore';
 
 export default function DetailScreen({ route }) {
@@ -27,6 +27,13 @@ export default function DetailScreen({ route }) {
     else { addFavorite(meal); }
   };
 
+  const ingredients = [];
+  for (let i = 1; i <= 20; i++) {
+    if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`].trim() !== "") {
+      ingredients.push(`${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`);
+    }
+  }
+
   return (
     <View style={styles.mainContainer}>
       <ScrollView style={styles.container} bounces={false}>
@@ -35,7 +42,6 @@ export default function DetailScreen({ route }) {
         <View style={styles.contentCard}>
           <Text style={styles.title}>{meal.strMeal}</Text>
           
-          {/* Bagian Badges/Labels */}
           <View style={styles.badgeContainer}>
             <View style={[styles.badge, { backgroundColor: '#E1F5FE' }]}>
               <Ionicons name="pricetag-outline" size={14} color="#0277BD" />
@@ -54,16 +60,26 @@ export default function DetailScreen({ route }) {
           </View>
 
           <View style={styles.separator} />
+
+          <Text style={styles.sectionTitle}>Bahan-bahan</Text>
+          <View style={styles.ingredientsContainer}>
+            {ingredients.map((item, index) => (
+              <View key={index} style={styles.ingredientRow}>
+                <Ionicons name="ellipse" size={8} color="#FF6B6B" style={styles.bulletIcon} />
+                <Text style={styles.ingredientText}>{item}</Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.separator} />
           
           <Text style={styles.sectionTitle}>Instruksi Memasak</Text>
-          {/* Format teks instruksi agar lebih rapi */}
           <Text style={styles.instructions}>
             {meal.strInstructions.replace(/\r\n/g, '\n\n')}
           </Text>
         </View>
       </ScrollView>
 
-      {/* Tombol Favorit Melayang */}
       <TouchableOpacity 
         style={[styles.fab, { backgroundColor: isFavorite ? '#FF6B6B' : '#FFFFFF' }]} 
         onPress={toggleFavorite}
@@ -90,7 +106,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30, 
     borderTopRightRadius: 30, 
     padding: 25, 
-    paddingBottom: 100, // Ruang buat FAB
+    paddingBottom: 100, 
     elevation: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -3 },
@@ -103,12 +119,15 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 13, fontWeight: '600', marginLeft: 5 },
   separator: { height: 1, backgroundColor: '#eee', marginBottom: 20 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#2D3436', marginBottom: 12 },
+  ingredientsContainer: { marginBottom: 10 },
+  ingredientRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8 },
+  bulletIcon: { marginTop: 6, marginRight: 10 },
+  ingredientText: { fontSize: 15, color: '#444', flex: 1, lineHeight: 22 },
   instructions: { fontSize: 15, color: '#444', lineHeight: 26, textAlign: 'justify' },
-  // Styling Tombol Melayang (Floating Action Button)
   fab: {
     position: 'absolute',
     right: 25,
-    top: 250, // Pas di garis lengkungan card
+    top: 250, 
     width: 60,
     height: 60,
     borderRadius: 30,

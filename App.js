@@ -1,44 +1,57 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons } from '@expo/vector-icons'; // Import Ikon
+import { StatusBar } from 'expo-status-bar';
 
-// Import Screens
-import HomeScreen from './src/screens/HomeScreen';
+import AboutScreen from './src/screens/AboutScreen';
 import BrowseScreen from './src/screens/BrowseScreen';
 import DetailScreen from './src/screens/DetailScreen';
-import SearchScreen from './src/screens/SearchScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
-import AboutScreen from './src/screens/AboutScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import SearchScreen from './src/screens/SearchScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Tema Warna Utama
 const COLORS = {
-  primary: '#FF6B6B', // Coral Red
-  accent: '#FFD93D', // Yellow Accent
-  bg: '#F8F9FA',      // Light Gray BG
-  text: '#2D3436',    // Dark Text
+  primary: '#FF6B6B',
+  accent: '#FFD93D',
+  bg: '#F8F9FA',
+  text: '#2D3436',
   white: '#FFFFFF',
 };
 
-// Styling Header Stack Navigator
 const screenOptionsStack = {
   headerStyle: { backgroundColor: COLORS.primary },
   headerTintColor: COLORS.white,
   headerTitleStyle: { fontWeight: 'bold' },
-  headerShadowVisible: false, // Clean header
+  headerShadowVisible: false,
 };
 
-// Stack untuk alur Home -> Browse -> Detail
 function HomeStack() {
   return (
     <Stack.Navigator screenOptions={screenOptionsStack}>
       <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'ResepKita' }} />
       <Stack.Screen name="Browse" component={BrowseScreen} options={({ route }) => ({ title: route.params.category })} />
+      <Stack.Screen name="Detail" component={DetailScreen} options={{ title: 'Detail Resep' }} />
+    </Stack.Navigator>
+  );
+}
+
+function SearchStack() {
+  return (
+    <Stack.Navigator screenOptions={screenOptionsStack}>
+      <Stack.Screen name="SearchMain" component={SearchScreen} options={{ title: 'Cari Resep' }} />
+      <Stack.Screen name="Detail" component={DetailScreen} options={{ title: 'Detail Resep' }} />
+    </Stack.Navigator>
+  );
+}
+
+function FavoritesStack() {
+  return (
+    <Stack.Navigator screenOptions={screenOptionsStack}>
+      <Stack.Screen name="FavoritesMain" component={FavoritesScreen} options={{ title: 'Resep Favorit' }} />
       <Stack.Screen name="Detail" component={DetailScreen} options={{ title: 'Detail Resep' }} />
     </Stack.Navigator>
   );
@@ -50,16 +63,11 @@ export default function App() {
       <StatusBar style="light" />
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          // Header styling untuk screen yang bukan stack
           ...screenOptionsStack,
-          
-          // Styling Tab Bar Bawah
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { height: 60, paddingBottom: 10, paddingTop: 5, backgroundColor: COLORS.white, borderTopWidth: 0, elevation: 5 },
           tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
-          
-          // Logika Menampilkan Ikon
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Beranda') { iconName = focused ? 'restaurant' : 'restaurant-outline'; } 
@@ -71,8 +79,8 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Beranda" component={HomeStack} options={{ headerShown: false }} />
-        <Tab.Screen name="Cari" component={SearchScreen} options={{ title: 'Cari Resep' }} />
-        <Tab.Screen name="Favorit" component={FavoritesScreen} options={{ title: 'Resep Favorit' }} />
+        <Tab.Screen name="Cari" component={SearchStack} options={{ headerShown: false, title: 'Cari Resep' }} />
+        <Tab.Screen name="Favorit" component={FavoritesStack} options={{ headerShown: false, title: 'Resep Favorit' }} />
         <Tab.Screen name="Tentang" component={AboutScreen} options={{ title: 'Profil Saya' }} />
       </Tab.Navigator>
     </NavigationContainer>

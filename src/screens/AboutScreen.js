@@ -1,6 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function AboutScreen() {
   return (
@@ -15,8 +14,8 @@ export default function AboutScreen() {
         />
       </View>
 
-      <Text style={styles.name}>Faisal Ana (Isi Nama Asli)</Text>
-      <Text style={styles.nim}>NIM: 21105120xx (Isi NIM Asli)</Text>
+      <Text style={styles.name}>Muhammad Faisal Rahman</Text>
+      <Text style={styles.nim}>NIM: 2410501066</Text>
       
       <View style={styles.infoCard}>
         <View style={styles.infoRow}>
