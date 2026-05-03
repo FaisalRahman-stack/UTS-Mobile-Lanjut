@@ -46,6 +46,7 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di lokal:
 ---
 
 ## 4. Screenshots
+
 a. Home Screen
 ![Home](./screenshots/homescreen.jpeg)
 
@@ -62,7 +63,7 @@ b. Browse Screen
 ![Favorites](./screenshots/favoritesscreen.jpeg)
 
 6. About Screen
-![About](./screenshoots/aboutscreen.jpeg)
+![About](./screenshots/aboutscreen.jpeg)
 
 ---
 
